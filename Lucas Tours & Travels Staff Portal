@@ -1,0 +1,141 @@
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+
+using namespace std;
+
+class Vehicle {
+private:
+    char Vehicle_number[6], Vehicle_driver[11], Vehicle_arrival[6], Vehicle_depart[6], b_from[11], b_to[11], Vehicle_seat[8][4][11];
+
+public:
+    void add_new_vehicle();
+    void reservation();
+    void empty();
+    void view();
+    void avail();
+    void position(int i);
+};
+
+static int t = 0;
+Vehicle vehicles[5];
+
+void vehicle_line(char ch) {
+    for (int x = 80; x > 0; x--)
+        cout << ch;
+}
+
+void Vehicle::add_new_vehicle() {
+    cout << "Enter Vehicle Number: ";
+    cin >> vehicles[t].Vehicle_number;
+
+    cout << "\nEnter Driver's Name: ";
+    cin >> vehicles[t].Vehicle_driver;
+
+    cout << "\nDeparture: ";
+    cin >> vehicles[t].Vehicle_depart;
+
+    cout << "\nArrival Time: ";
+    cin >> vehicles[t].Vehicle_arrival;
+
+    cout << "\nFrom: ";
+    cin >> vehicles[t].b_from;
+
+    cout << "\nTo: ";
+    cin >> vehicles[t].b_to;
+
+    vehicles[t].empty();
+    cout << "\nNew Vehicle Added Successfully \t\t\t";
+    t++;
+}
+
+void Vehicle::reservation() {
+    int i;
+    cout << "Enter the vehicle number for reservation: ";
+    cin >> i;
+    
+    // Your reservation logic goes here
+
+    cout << "\nReservation successful for Vehicle Number " << vehicles[i - 1].Vehicle_number << "\n";
+}
+
+void Vehicle::empty() {
+    for (int x = 0; x < 8; x++) {
+        for (int z = 0; z < 4; z++) {
+            strcpy(vehicles[t].Vehicle_seat[x][z], "Empty");
+        }
+    }
+}
+
+void Vehicle::view() {
+    int i;
+    cout << "Enter the vehicle number to view reservations: ";
+    cin >> i;
+    vehicles[i - 1].position(i - 1);
+}
+
+void Vehicle::avail() {
+    for (int y = 0; y < t; y++) {
+        vehicle_line('*');
+        // Display information about available vehicles
+        vehicle_line('_');
+    }
+}
+
+void Vehicle::position(int i) {
+    vehicle_line('*');
+    cout << "\n\t\t\tVehicle Number: " << vehicles[i].Vehicle_number
+         << "\n\t\t\tDriver: " << vehicles[i].Vehicle_driver
+         << "\n\t\t\tDeparture: " << vehicles[i].Vehicle_depart
+         << "\n\t\t\tArrival Time: " << vehicles[i].Vehicle_arrival
+         << "\n\t\t\tFrom: " << vehicles[i].b_from
+         << "\n\t\t\tTo: " << vehicles[i].b_to << endl;
+    vehicle_line('_');
+    cout << "\n\t\t\tReservations\n";
+    vehicle_line('_');
+
+    for (int x = 0; x < 8; x++) {
+        for (int z = 0; z < 4; z++) {
+            cout << "\n\t\t\t" << x + 1 << ". Seat " << z + 1 << ": " << vehicles[i].Vehicle_seat[x][z];
+        }
+    }
+    cout << endl;
+}
+
+int main() {
+    int w;
+
+    while (1) {
+        cout << "\n\n\t\t*Lucas Tours & Travels Staff Portal*\n";
+        cout << "\t\t\t1. Add New Vehicle\n"
+             << "\t\t\t2. Reservation\n"
+             << "\t\t\t3. Show Reservations\n"
+             << "\t\t\t4. Vehicles Available\n"
+             << "\t\t\t5. Exit\n"
+             << "\n\t\t\tEnter your Choice: ";
+        cin >> w;
+
+        switch (w) {
+            case 1:
+                vehicles[t].add_new_vehicle();
+                break;
+
+            case 2:
+                vehicles[t].reservation();
+                break;
+
+            case 3:
+                vehicles[0].view();
+                break;
+
+            case 4:
+                vehicles[0].avail();
+                break;
+
+            case 5:
+                exit(0);
+        }
+    }
+
+    return 0;
+}
